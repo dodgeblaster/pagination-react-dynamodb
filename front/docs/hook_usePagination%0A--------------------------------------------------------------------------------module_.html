@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: pages/Notes/hooks/usePagination</title>
+    <title>JSDoc: Module: hook/usePagination
+--------------------------------------------------------------------------------</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +18,8 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: pages/Notes/hooks/usePagination</h1>
+    <h1 class="page-title">Module: hook/usePagination
+--------------------------------------------------------------------------------</h1>
 
     
 
@@ -28,14 +30,91 @@
 
 <header>
     
-        
-    
 </header>
 
 <article>
     <div class="container-overview">
     
         
+            <div class="description"><p>This module is takes a fetcher function and returns data, network, and actions
+to facilitate the pagination workflow.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line2">line 2</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            <h3>Example</h3>
+            
+    <pre class="prettyprint"><code>const notesFetcher = (cursor) => fetch('https://myNotesUrl.com')
+function PaginationContainer(props) {
+    const { network, data, actions } = usePagination(notesFetcher)
+
+    if (network.error) {
+        return &lt;p>{network.error}&lt;/p>
+    }
+
+    if (network.loading) {
+        return &lt;p>Loading&lt;/p>
+    }
+
+    return (
+        &lt;div>
+            &lt;p>Successfully Loaded&lt;/p>
+            &lt;div>
+                {data.list.map((x, i) => (
+                    &lt;p key={i}>{x.title}&lt;/p>
+                ))}
+            &lt;/div>
+            {data.isBeginning &amp;&amp; &lt;p>First Page&lt;/p>}
+            {data.isEnd &amp;&amp; &lt;p>Last Page&lt;/p>}
+            &lt;button onClick={actions.back}>BackButton&lt;/button>
+            &lt;p>{data.pageNumber}&lt;/p>
+            &lt;button onClick={actions.next}>Next&lt;/button>
+        &lt;/div>
+    )
+}</code></pre>
 
         
     
@@ -58,13 +137,21 @@
 
         
             
-<h4 class="name" id="~getList"><span class="type-signature">(inner) </span>getList<span class="type-signature"></span></h4>
+<h4 class="name" id="~getDataWithFetcher"><span class="type-signature">(inner) </span>getDataWithFetcher<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>This function either be called to go to the next page, or go back a page</p>
+    <p>This function will use the passed in fetcher function to make an api call.
+Once it as received the data, it will</p>
+<ul>
+<li>update loading state</li>
+<li>update list with new data</li>
+<li>update the next cursor</li>
+<li>update cache</li>
+<li>update current page number</li>
+</ul>
 </div>
 
 
@@ -102,7 +189,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line72">line 72</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -127,8 +214,9 @@
 
 <div class="description">
     <p>This function will first check if we have a next cursor to use.
-If we dont, then we cant make a call, so we return silently. This
-covers the scenario where we are at the end of our list.</p>
+If we dont, then we cant make a call, so will short circuit by
+returning early. This covers the scenario where we are at the
+end of our list.</p>
 <p>If we do have a next cursor, we then check if we already have
 the results in our cache, if so, then return those results</p>
 <p>Otherwise, make an api call.</p>
@@ -169,7 +257,7 @@ the results in our cache, if so, then return those results</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line100">line 100</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -194,7 +282,8 @@ the results in our cache, if so, then return those results</p>
 
 <div class="description">
     <p>This function will first check if we are on page 1. If so,
-return silently, because we are at the beginning of the list.</p>
+we will short circuit by returning early, because we are
+at the beginning of the list.</p>
 <p>If we are not at the beginning, we then check if we already have
 the results in our cache, if so, then return those results</p>
 <p>Otherwise, make an api call.</p>
@@ -235,7 +324,7 @@ the results in our cache, if so, then return those results</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line128">line 128</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
@@ -293,7 +382,7 @@ the results in our cache, if so, then return those results</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line38">line 38</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -467,7 +556,7 @@ the results in our cache, if so, then return those results</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line30">line 30</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -636,7 +725,7 @@ the results in our cache, if so, then return those results</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line15">line 15</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -779,7 +868,7 @@ the results in our cache, if so, then return those results</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line23">line 23</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -968,7 +1057,7 @@ the results in our cache, if so, then return those results</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line6">line 6</a>
+        <a href="hooks_usePagination.js.html">hooks/usePagination.js</a>, <a href="hooks_usePagination.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -998,13 +1087,14 @@ the results in our cache, if so, then return those results</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pages_Notes_hooks_usePagination.html">pages/Notes/hooks/usePagination</a></li></ul><h3>Classes</h3><ul><li><a href="Note.html">Note</a></li><li><a href="Pagination.html">Pagination</a></li><li><a href="PaginationContainer.html">PaginationContainer</a></li><li><a href="PaginationControls.html">PaginationControls</a></li><li><a href="PaginationError.html">PaginationError</a></li><li><a href="PaginationLoading.html">PaginationLoading</a></li></ul><h3>Global</h3><ul><li><a href="global.html#NotesFetcher">NotesFetcher</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="hook_usePagination%250A--------------------------------------------------------------------------------module_.html">hook/usePagination
+--------------------------------------------------------------------------------</a></li></ul><h3>Classes</h3><ul><li><a href="Pagination_Component_Controls.html">Pagination/Component/Controls</a></li><li><a href="Pagination_Component_Note.html">Pagination/Component/Note</a></li><li><a href="Pagination_Container.html">Pagination/Container</a></li><li><a href="Pagination_PresentationError.html">Pagination/PresentationError</a></li><li><a href="Pagination_PresentationLoading.html">Pagination/PresentationLoading</a></li><li><a href="Pagination_PresentationSuccess.html">Pagination/PresentationSuccess</a></li></ul><h3>Global</h3><ul><li><a href="global.html#NotesFetcher">NotesFetcher</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Feb 21 2021 15:57:55 GMT-0700 (Mountain Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Feb 21 2021 16:32:43 GMT-0700 (Mountain Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

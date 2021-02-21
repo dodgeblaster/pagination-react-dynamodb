@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react'
 /**
  * @module
+ * @name hook/usePagination
+ * @description This module is takes a fetcher function and returns data, network, and actions
+ * to facilitate the pagination workflow.
+ *
+ * @example
+ * const notesFetcher = (cursor) => fetch(`https://myNotesUrl.com?cursor=${cursor}`)
+ * const { network, data, actions } = usePagination(notesFetcher)
  */
 
 /**
@@ -70,13 +77,19 @@ const usePagination = (apiCall) => {
     }, [apiCall])
 
     /**
-     * This function either be called to go to the next page, or go back a page
-     * @name getList
+     * This function will use the passed in fetcher function to make an api call.
+     * Once it as received the data, it will
+     * - update loading state
+     * - update list with new data
+     * - update the next cursor
+     * - update cache
+     * - update current page number
+     * @name getDataWithFetcher
      * @param {string} cursor
      * @param {number} page
      * @returns {void}
      */
-    const getList = async (cursor, page) => {
+    const getDataWithFetcher = async (cursor, page) => {
         updateLoading(true)
         try {
             const data = await apiCall(cursor)
@@ -99,8 +112,9 @@ const usePagination = (apiCall) => {
 
     /**
      * This function will first check if we have a next cursor to use.
-     * If we dont, then we cant make a call, so we return silently. This
-     * covers the scenario where we are at the end of our list.
+     * If we dont, then we cant make a call, so will short circuit by
+     * returning early. This covers the scenario where we are at the
+     * end of our list.
      *
      * If we do have a next cursor, we then check if we already have
      * the results in our cache, if so, then return those results
@@ -122,12 +136,13 @@ const usePagination = (apiCall) => {
             return
         }
 
-        getList(next, nextIndex)
+        getDataWithFetcher(next, nextIndex)
     }
 
     /**
      * This function will first check if we are on page 1. If so,
-     * return silently, because we are at the beginning of the list.
+     * we will short circuit by returning early, because we are
+     * at the beginning of the list.
      *
      * If we are not at the beginning, we then check if we already have
      * the results in our cache, if so, then return those results
@@ -149,7 +164,7 @@ const usePagination = (apiCall) => {
             return
         }
 
-        await getList(cache[pageNumber], prevIndex)
+        await getDataWithFetcher(cache[pageNumber], prevIndex)
     }
 
     return {

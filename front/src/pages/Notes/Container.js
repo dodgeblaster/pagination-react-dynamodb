@@ -29,7 +29,7 @@ const notesFetcher = async (cursor = null) => {
 }
 
 /**
- * @name PaginationContainer
+ * @name Pagination/Container
  * @component
  * @example
  * <PaginationContainer/>

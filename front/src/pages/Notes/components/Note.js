@@ -20,6 +20,7 @@ const Icon = () => (
 )
 
 /**
+ * @name Pagination/Component/Note
  * @component
  * @example
  * <Note title="Example Note 1" />

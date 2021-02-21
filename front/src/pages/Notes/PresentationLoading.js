@@ -4,7 +4,7 @@ import Note from './components/Note'
 import PaginationControls from './components/PaginationControls'
 
 /**
- * @name PaginationLoading
+ * @name Pagination/PresentationLoading
  * @component
  * @example
  * <PaginationLoading pageNumber={1}/>

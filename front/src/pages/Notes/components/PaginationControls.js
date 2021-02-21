@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 /**
+ * @name Pagination/Component/Controls
  * @component
  * @example
  * <PaginationControls

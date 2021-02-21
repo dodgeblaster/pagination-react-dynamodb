@@ -4,7 +4,7 @@ import Note from './components/Note'
 import PaginationControls from './components/PaginationControls'
 
 /**
- * @name PaginationError
+ * @name Pagination/PresentationError
  * @component
  * @example
  * <PresentationError pageNumber={1}>

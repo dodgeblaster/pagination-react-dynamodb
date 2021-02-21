@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/PaginationControls.js</title>
+    <title>JSDoc: Source: PresentationLoading.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/PaginationControls.js</h1>
+    <h1 class="page-title">Source: PresentationLoading.js</h1>
 
     
 
@@ -28,63 +28,39 @@
         <article>
             <pre class="prettyprint source linenums"><code>import React from 'react'
 import PropTypes from 'prop-types'
+import Note from './components/Note'
+import PaginationControls from './components/PaginationControls'
 
 /**
- * @name Pagination/Component/Controls
+ * @name Pagination/PresentationLoading
  * @component
  * @example
- * &lt;PaginationControls
- *      pageNumber={12}
- *      back={() => console.log('BACK')}
- *      next={() => console.log('NEXT')}
- *      atTheBeginning={false}
- *      atTheEnd={false}
- * />
+ * &lt;PaginationLoading pageNumber={1}/>
  */
-function PaginationControls(props) {
-    const activeButtonStyles = `py-2 px-3 rounded bg-purple-700 text-white text-xs`
-    const disabledButtonStyles = `py-2 px-3 rounded bg-purple-200 text-white text-xs cursor-not-allowed`
-
-    const emptyFn = () => {}
-
+function PaginationLoading(props) {
     return (
-        &lt;div className="flex justify-between items-center mt-2 w-96">
-            &lt;button
-                disabled={props.atTheBeginning}
-                className={
-                    props.atTheBeginning
-                        ? disabledButtonStyles
-                        : activeButtonStyles
-                }
-                onClick={props.back || emptyFn}
-            >
-                Back
-            &lt;/button>
-            &lt;p className="px-5 py-2 mx-2 text-xs rounded flex justify-center flex-1 ">
-                {props.pageNumber}
+        &lt;div className="h-screen bg-gray-100 flex items-center justify-center flex-col">
+            &lt;p className="w-96 mb-2 text-3xl font-bold text-gray-300">
+                My Notes
             &lt;/p>
-            &lt;button
-                disabled={props.atTheEnd}
-                onClick={props.next || emptyFn}
-                className={
-                    props.atTheEnd ? disabledButtonStyles : activeButtonStyles
-                }
-            >
-                Next
-            &lt;/button>
+            &lt;div className=" w-96 bg-white shadow-md rounded">
+                &lt;div className="divide-y divide-gray-100">
+                    &lt;Note key={'empty-1'} loading={true} />
+                    &lt;Note key={'empty-2'} loading={true} />
+                    &lt;Note key={'empty-3'} loading={true} />
+                    &lt;Note key={'empty-4'} loading={true} />
+                &lt;/div>
+            &lt;/div>
+            &lt;PaginationControls pageNumber={props.pageNumber} />
         &lt;/div>
     )
 }
 
-PaginationControls.propTypes = {
-    atTheBeginning: PropTypes.bool,
-    atTheEnd: PropTypes.bool,
-    pageNumber: PropTypes.number,
-    back: PropTypes.func,
-    next: PropTypes.func
+PaginationLoading.propTypes = {
+    pageNumber: PropTypes.number.isRequired
 }
 
-export default PaginationControls
+export default PaginationLoading
 </code></pre>
         </article>
     </section>

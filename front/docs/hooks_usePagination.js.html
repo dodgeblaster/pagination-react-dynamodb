@@ -29,6 +29,13 @@
             <pre class="prettyprint source linenums"><code>import { useState, useEffect } from 'react'
 /**
  * @module
+ * @name hook/usePagination
+ * @description This module is takes a fetcher function and returns data, network, and actions
+ * to facilitate the pagination workflow.
+ *
+ * @example
+ * const notesFetcher = (cursor) => fetch(`https://myNotesUrl.com?cursor=${cursor}`)
+ * const { network, data, actions } = usePagination(notesFetcher)
  */
 
 /**
@@ -38,16 +45,13 @@
  * @property {number} pageNumber - current page number
  * @property {boolean} isBeginning - to help with presentation logic
  * @property {boolean} isEnd - to help with presentation logic
- *
- */
 
-/**
+ 
  * @typedef NetworkState
  * @type {object}
  * @property {boolean} loading - to show a loading screen
  * @property {string | boolean} error - will show error message or false if no error is thrown
  * @property {boolean} loaded - which communciates that we have successfuly fetched the data
- *
  */
 
 /**
@@ -55,7 +59,6 @@
  * @type {object}
  * @property {function} back - will reference the pageNumber state and cursors, and load data for previous page
  * @property {function} next - will reference the pageNumber state and cursors, and load data for next page
- *
  */
 
 /**
@@ -64,14 +67,12 @@
  * @property {PaginationData} data
  * @property {NetworkState} network
  * @property {PaginationActions} actions
- *
  */
 
 /**
- * Use Pagination
+ * @name usePagination
  * @param {function} apiCall
  * @returns {HookResponse}
- *
  */
 const usePagination = (apiCall) => {
     const [loading, updateLoading] = useState(true)
@@ -84,7 +85,6 @@ const usePagination = (apiCall) => {
 
     /**
      * Make initial api call
-     *
      */
     useEffect(() => {
         apiCall(null)
@@ -104,14 +104,19 @@ const usePagination = (apiCall) => {
     }, [apiCall])
 
     /**
-     * Get List
-     * This function either be called to go to the next page, or go back a page
+     * This function will use the passed in fetcher function to make an api call.
+     * Once it as received the data, it will
+     * - update loading state
+     * - update list with new data
+     * - update the next cursor
+     * - update cache
+     * - update current page number
+     * @name getDataWithFetcher
      * @param {string} cursor
      * @param {number} page
-     * @returns {void} void
-     *
+     * @returns {void}
      */
-    const getList = async (cursor, page) => {
+    const getDataWithFetcher = async (cursor, page) => {
         updateLoading(true)
         try {
             const data = await apiCall(cursor)
@@ -133,18 +138,18 @@ const usePagination = (apiCall) => {
     }
 
     /**
-     * Next Page
      * This function will first check if we have a next cursor to use.
-     * If we dont, then we cant make a call, so we return silently. This
-     * covers the scenario where we are at the end of our list.
+     * If we dont, then we cant make a call, so will short circuit by
+     * returning early. This covers the scenario where we are at the
+     * end of our list.
      *
      * If we do have a next cursor, we then check if we already have
      * the results in our cache, if so, then return those results
      *
      * Otherwise, make an api call.
      *
-     * @returns {void} void
-     *
+     * @name nextPage
+     * @returns {void}
      */
     const nextPage = async () => {
         if (!cache[pageNumber].next) {
@@ -162,17 +167,17 @@ const usePagination = (apiCall) => {
     }
 
     /**
-     * Prev Page
      * This function will first check if we are on page 1. If so,
-     * return silently, because we are at the beginning of the list.
+     * we will short circuit by returning early, because we are
+     * at the beginning of the list.
      *
      * If we are not at the beginning, we then check if we already have
      * the results in our cache, if so, then return those results
      *
      * Otherwise, make an api call.
      *
-     * @returns {void} void
-     *
+     * @name prevPage
+     * @returns {void}
      */
     const prevPage = async () => {
         if (pageNumber === 1) {
@@ -189,28 +194,22 @@ const usePagination = (apiCall) => {
         await getList(cache[pageNumber], prevIndex)
     }
 
-    const data = {
-        list,
-        pageNumber: pageNumber,
-        isBeginning: pageNumber === 1,
-        isEnd: cache[pageNumber] &amp;&amp; !cache[pageNumber].next
-    }
-
-    const network = {
-        loading,
-        error: errorMessage,
-        loaded
-    }
-
-    const actions = {
-        back: prevPage,
-        next: nextPage
-    }
-
     return {
-        network,
-        data,
-        actions
+        network: {
+            loading,
+            error: errorMessage,
+            loaded
+        },
+        data: {
+            list,
+            pageNumber: pageNumber,
+            isBeginning: pageNumber === 1,
+            isEnd: cache[pageNumber] &amp;&amp; !cache[pageNumber].next
+        },
+        actions: {
+            back: prevPage,
+            next: nextPage
+        }
     }
 }
 
@@ -225,13 +224,13 @@ export default usePagination
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pages_Notes_hooks_usePagination.html">pages/Notes/hooks/usePagination</a></li></ul><h3>Classes</h3><ul><li><a href="PaginationControls.html">PaginationControls</a></li></ul><h3>Global</h3><ul><li><a href="global.html#notesFetcher">notesFetcher</a></li><li><a href="global.html#PaginationContainer">PaginationContainer</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-hook_usePagination.html">hook/usePagination</a></li></ul><h3>Classes</h3><ul><li><a href="Pagination_Component_Controls.html">Pagination/Component/Controls</a></li><li><a href="Pagination_Component_Note.html">Pagination/Component/Note</a></li><li><a href="Pagination_Container.html">Pagination/Container</a></li><li><a href="Pagination_PresentationError.html">Pagination/PresentationError</a></li><li><a href="Pagination_PresentationLoading.html">Pagination/PresentationLoading</a></li><li><a href="Pagination_PresentationSuccess.html">Pagination/PresentationSuccess</a></li></ul><h3>Global</h3><ul><li><a href="global.html#NotesFetcher">NotesFetcher</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Feb 20 2021 23:58:35 GMT-0700 (Mountain Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Feb 21 2021 16:48:42 GMT-0700 (Mountain Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

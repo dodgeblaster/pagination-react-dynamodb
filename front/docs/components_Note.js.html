@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/PaginationControls.js</title>
+    <title>JSDoc: Source: components/Note.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/PaginationControls.js</h1>
+    <h1 class="page-title">Source: components/Note.js</h1>
 
     
 
@@ -29,62 +29,58 @@
             <pre class="prettyprint source linenums"><code>import React from 'react'
 import PropTypes from 'prop-types'
 
+const Icon = () => (
+    &lt;svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        height="20"
+        className="mr-3 text-purple-300"
+    >
+        &lt;path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+        />
+    &lt;/svg>
+)
+
 /**
- * @name Pagination/Component/Controls
+ * @name Pagination/Component/Note
  * @component
  * @example
- * &lt;PaginationControls
- *      pageNumber={12}
- *      back={() => console.log('BACK')}
- *      next={() => console.log('NEXT')}
- *      atTheBeginning={false}
- *      atTheEnd={false}
- * />
+ * &lt;Note title="Example Note 1" />
  */
-function PaginationControls(props) {
-    const activeButtonStyles = `py-2 px-3 rounded bg-purple-700 text-white text-xs`
-    const disabledButtonStyles = `py-2 px-3 rounded bg-purple-200 text-white text-xs cursor-not-allowed`
-
-    const emptyFn = () => {}
-
+function Note(props) {
+    if (props.loading) {
+        return (
+            &lt;div className="flex items-center px-3 h-14">
+                &lt;Icon />
+                &lt;div className="h-2 w-10 rounded bg-gray-100">&lt;/div>
+                &lt;div className="ml-auto h-1 w-16 rounded bg-gray-100">&lt;/div>
+            &lt;/div>
+        )
+    }
+    if (!props.title || props.title.length === 0) {
+        return &lt;div className="flex items-center px-3 h-14">&lt;/div>
+    }
     return (
-        &lt;div className="flex justify-between items-center mt-2 w-96">
-            &lt;button
-                disabled={props.atTheBeginning}
-                className={
-                    props.atTheBeginning
-                        ? disabledButtonStyles
-                        : activeButtonStyles
-                }
-                onClick={props.back || emptyFn}
-            >
-                Back
-            &lt;/button>
-            &lt;p className="px-5 py-2 mx-2 text-xs rounded flex justify-center flex-1 ">
-                {props.pageNumber}
-            &lt;/p>
-            &lt;button
-                disabled={props.atTheEnd}
-                onClick={props.next || emptyFn}
-                className={
-                    props.atTheEnd ? disabledButtonStyles : activeButtonStyles
-                }
-            >
-                Next
-            &lt;/button>
+        &lt;div className="flex items-center px-3 h-14">
+            &lt;Icon />
+            &lt;p className="text-gray-800">{props.title}&lt;/p>
+            &lt;p className="ml-auto text-gray-300 text-xs">Added on Jan 30th&lt;/p>
         &lt;/div>
     )
 }
 
-PaginationControls.propTypes = {
-    atTheBeginning: PropTypes.bool,
-    atTheEnd: PropTypes.bool,
-    pageNumber: PropTypes.number,
-    back: PropTypes.func,
-    next: PropTypes.func
+Note.propTypes = {
+    loading: PropTypes.bool,
+    title: PropTypes.string
 }
 
-export default PaginationControls
+export default Note
 </code></pre>
         </article>
     </section>

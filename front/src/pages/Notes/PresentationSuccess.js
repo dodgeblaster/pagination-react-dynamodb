@@ -4,7 +4,7 @@ import Note from './components/Note'
 import PaginationControls from './components/PaginationControls'
 
 /**
- * @name Pagination
+ * @name Pagination/PresentationSuccess
  * @component
  * @example
  * <Pagination
