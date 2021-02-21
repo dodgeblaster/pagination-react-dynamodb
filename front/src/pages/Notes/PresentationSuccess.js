@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Note from './components/Note'
-import PaginationSection from './components/Pagination'
+import PaginationControls from './components/PaginationControls'
 
 function Pagination(props) {
     let empty = props.list.length > 4 ? 0 : 4 - props.list.length
@@ -21,7 +21,7 @@ function Pagination(props) {
                     ))}
                 </div>
             </div>
-            <PaginationSection
+            <PaginationControls
                 back={props.back}
                 next={props.next}
                 atTheBeginning={props.isBeginning}

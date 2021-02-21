@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Note from './components/Note'
-import PaginationSection from './components/Pagination'
+import PaginationControls from './components/PaginationControls'
 
 function PaginationLoading(props) {
     return (
@@ -17,7 +17,7 @@ function PaginationLoading(props) {
                     <Note key={'empty-4'} loading={true} />
                 </div>
             </div>
-            <PaginationSection pageNumber={props.pageNumber} />
+            <PaginationControls pageNumber={props.pageNumber} />
         </div>
     )
 }
