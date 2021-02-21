@@ -19,6 +19,13 @@ const Icon = () => (
     </svg>
 )
 
+/**
+ * Component for Note.
+ *
+ * @component
+ * @example
+ * <Note title="Example Note 1" />
+ */
 function Note(props) {
     if (props.loading) {
         return (

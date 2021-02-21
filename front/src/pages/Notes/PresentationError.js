@@ -14,10 +14,10 @@ function PaginationError(props) {
                     {props.children}
                 </div>
                 <div className="divide-y divide-gray-100">
-                    <Note key={'empty-1'} loading={true} />
-                    <Note key={'empty-2'} loading={true} />
-                    <Note key={'empty-3'} loading={true} />
-                    <Note key={'empty-4'} loading={true} />
+                    <Note key={'empty-1'} />
+                    <Note key={'empty-2'} />
+                    <Note key={'empty-3'} />
+                    <Note key={'empty-4'} />
                 </div>
             </div>
             <PaginationControls pageNumber={props.pageNumber} />

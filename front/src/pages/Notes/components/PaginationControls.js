@@ -1,7 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-function PaginationSection(props) {
+/**
+ * Component for Pagination Controls.
+ *
+ * @component
+ * @example
+ *  <PaginationControls
+        pageNumber={12}
+        back={() => console.log('BACK')}
+        next={() => console.log('NEXT')}
+        atTheBeginning={false}
+        atTheEnd={false}
+    />
+ */
+function PaginationControls(props) {
     const activeButtonStyles = `py-2 px-3 rounded bg-purple-700 text-white text-xs`
     const disabledButtonStyles = `py-2 px-3 rounded bg-purple-200 text-white text-xs cursor-not-allowed`
 
@@ -36,7 +49,7 @@ function PaginationSection(props) {
     )
 }
 
-PaginationSection.propTypes = {
+PaginationControls.propTypes = {
     atTheBeginning: PropTypes.bool,
     atTheEnd: PropTypes.bool,
     pageNumber: PropTypes.number,
@@ -44,4 +57,4 @@ PaginationSection.propTypes = {
     next: PropTypes.func
 }
 
-export default PaginationSection
+export default PaginationControls

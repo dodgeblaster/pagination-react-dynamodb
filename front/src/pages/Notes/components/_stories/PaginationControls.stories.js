@@ -1,7 +1,5 @@
 import React from 'react'
-
 import PaginationControls from '../PaginationControls'
-
 export default {
     title: 'Pagination/PaginationControls',
     component: PaginationControls

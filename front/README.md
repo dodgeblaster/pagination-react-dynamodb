@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# Pagination React DynamoDB
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a reference project which implements:
 
-## Available Scripts
+-   Component Organization Strategy
+    -   pages have containers
+    -   containers make use of custom hooks for business logic
+    -   containers make use of presentation components for UI
+    -   hooks are tested by mounting them in a test component and testing them with react-testing-lirbary
+    -   component development is aided by storybook
+    -   all code is commented using JSDoc conventions
+    -   full workflows are testing using Cypress (still a work in progress)
 
-In the project directory, you can run:
+Example project stucture:
 
-### `yarn start`
+```
+/docs/
+    ...generated docs
+/cypress
+    /integration
+        itworks.js
+/pages
+    /Notes
+        /components
+            /_stories
+                ComponentA.stories.js
+                ComponentB.stories.js
+            ComponentA.js
+            ComponentB.js
+        /hooks
+            /_tests
+                TestComponent.js
+                hookA.test.js
+            hookA.js
+        Container.js
+        PresentationLoading.js
+        PresentationError.js
+        PresentationSuccess.js
+amplify.yml
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Tools and Conventions
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+-   jest and react-testing-library for testing logic and functionality
+-   storybook for visually aiding devs in building components
+-   jsdocs for generating documentation
+-   cypress for integration testing
+-   amplify.yml for defining CICD pipeline
+-   AWS Amplify for running a CICD pipeline, and deploying
 
-### `yarn test`
+# NPM Commands
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   `npm run docs` - generates docs
+-   `npm run test-unit` - runs jest tests
+-   `npm run test-int` - runs cypress tests (WIP)
+-   `npm run storybook` - runs storybook locally
 
-### `yarn build`
+# Deployed URLS
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-   Documentation (not yet deployed)
+-   Storybook (not yet deployed)
+-   App (not yet deployed)
