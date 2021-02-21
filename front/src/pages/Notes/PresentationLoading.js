@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Note from './components/Note'
 import PaginationSection from './components/Pagination'
 
@@ -16,13 +17,13 @@ function PaginationLoading(props) {
                     <Note key={'empty-4'} loading={true} />
                 </div>
             </div>
-            <PaginationSection
-                back={() => {}}
-                next={() => {}}
-                paginationState={props.paginationState}
-            />
+            <PaginationSection pageNumber={props.pageNumber} />
         </div>
     )
+}
+
+PaginationLoading.propTypes = {
+    pageNumber: PropTypes.number.isRequired
 }
 
 export default PaginationLoading

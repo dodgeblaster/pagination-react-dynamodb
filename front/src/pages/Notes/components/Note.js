@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const Icon = () => (
     <svg
@@ -38,6 +39,11 @@ function Note(props) {
             <p className="ml-auto text-gray-300 text-xs">Added on Jan 30th</p>
         </div>
     )
+}
+
+Note.propTypes = {
+    loading: PropTypes.bool,
+    title: PropTypes.string
 }
 
 export default Note

@@ -39,11 +39,15 @@ function PaginationContainer() {
     const { network, data, actions } = usePagination(notesFetcher)
 
     if (network.error) {
-        return <PresentationError>{network.error}</PresentationError>
+        return (
+            <PresentationError pageNumber={data.pageNumber}>
+                {network.error}
+            </PresentationError>
+        )
     }
 
     if (network.loading) {
-        return <PresentationLoading paginationState={data.pageNumber} />
+        return <PresentationLoading pageNumber={data.pageNumber} />
     }
 
     return (

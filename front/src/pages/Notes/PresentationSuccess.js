@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Note from './components/Note'
 import PaginationSection from './components/Pagination'
 
@@ -25,10 +26,20 @@ function Pagination(props) {
                 next={props.next}
                 atTheBeginning={props.isBeginning}
                 atTheEnd={props.isEnd}
-                paginationState={props.pageNumber}
+                pageNumber={props.pageNumber}
             />
         </div>
     )
+}
+
+Pagination.propTypes = {
+    list: PropTypes.array,
+    paginationState: PropTypes.number.isRequired,
+    isBeginning: PropTypes.bool,
+    isEnd: PropTypes.bool,
+    pageNumber: PropTypes.number,
+    back: PropTypes.func.isRequired,
+    next: PropTypes.func.isRequired
 }
 
 export default Pagination
