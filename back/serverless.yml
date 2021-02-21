@@ -1,0 +1,44 @@
+service: pagination-back
+
+frameworkVersion: '2'
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    environment:
+        TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - dynamodb:Query
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+          Resource: !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${self:service}-${opt:stage, self:provider.stage}'
+functions:
+    hello:
+        handler: src/paginationHandler.main
+        events:
+            - http:
+                  path: getnotes
+                  cors: true
+                  method: post
+
+resources:
+    Resources:
+        productsTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:service}-${opt:stage, self:provider.stage}
+                AttributeDefinitions:
+                    - AttributeName: pk
+                      AttributeType: S
+                    - AttributeName: sk
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: pk
+                      KeyType: HASH
+                    - AttributeName: sk
+                      KeyType: RANGE
+                BillingMode: PAY_PER_REQUEST
