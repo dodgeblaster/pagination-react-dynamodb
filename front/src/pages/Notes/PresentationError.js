@@ -3,6 +3,14 @@ import PropTypes from 'prop-types'
 import Note from './components/Note'
 import PaginationControls from './components/PaginationControls'
 
+/**
+ * @name PaginationError
+ * @component
+ * @example
+ * <PresentationError pageNumber={1}>
+ *    There was a problem
+ * </PresentationError>
+ */
 function PaginationError(props) {
     return (
         <div className="h-screen bg-gray-100 flex items-center justify-center flex-col">

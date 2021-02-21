@@ -9,15 +9,12 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient({
  * @type {object}
  * @property {object[]} items - list of notes to show
  * @property {string} next - string representing the cursor for the next paginated call
- *
  */
 
 /**
- * greenTeamNotes
- *
+ * @name greenTeamNotes
  * @param {String} cursor
  * @returns {Promise<NotesResponse>}
- *
  */
 const greenTeamNotes = async (cursor = null) => {
     const params = {
@@ -45,10 +42,9 @@ const greenTeamNotes = async (cursor = null) => {
 }
 
 /**
- * Main Handler
+ * @name main
  * @param {ApiGatewayEvent} event
  * @returns {ApiGatewayResponse<NotesResponse>} - ApiGatewayResponse<> is made up. Not sure how to represent this yet
- *
  */
 module.exports.main = async (event) => {
     const data = JSON.parse(event.body)

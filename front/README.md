@@ -2,13 +2,12 @@
 
 This is a reference project which implements:
 
--   Component Organization Strategy
+-   Organization Strategy
     -   pages have containers
     -   containers make use of custom hooks for business logic
     -   containers make use of presentation components for UI
-    -   hooks are tested by mounting them in a test component and testing them with react-testing-lirbary
+    -   hooks are tested by mounting them in a test component and testing them with react-testing-library
     -   component development is aided by storybook
-    -   all code is commented using JSDoc conventions
     -   full workflows are testing using Cypress (still a work in progress)
 
 Example project stucture:

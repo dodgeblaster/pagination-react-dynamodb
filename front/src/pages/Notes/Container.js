@@ -9,15 +9,12 @@ import PresentationSuccess from './PresentationSuccess'
  * @type {object}
  * @property {object[]} items - list of notes to show
  * @property {string} next - string representing the cursor for the next paginated call
- *
  */
 
 /**
- * Notes Fetcher
- *
+ * @name NotesFetcher
  * @param {string} cursor - if not provided, will default to null
  * @returns {Promise<NotesResponse>}
- *
  */
 const notesFetcher = async (cursor = null) => {
     const x = await fetch(process.env.REACT_APP_URL, {
@@ -32,8 +29,10 @@ const notesFetcher = async (cursor = null) => {
 }
 
 /**
- * PaginationContainer
- *
+ * @name PaginationContainer
+ * @component
+ * @example
+ * <PaginationContainer/>
  */
 function PaginationContainer() {
     const { network, data, actions } = usePagination(notesFetcher)

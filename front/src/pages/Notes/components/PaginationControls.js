@@ -2,17 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 /**
- * Component for Pagination Controls.
- *
  * @component
  * @example
- *  <PaginationControls
-        pageNumber={12}
-        back={() => console.log('BACK')}
-        next={() => console.log('NEXT')}
-        atTheBeginning={false}
-        atTheEnd={false}
-    />
+ * <PaginationControls
+ *      pageNumber={12}
+ *      back={() => console.log('BACK')}
+ *      next={() => console.log('NEXT')}
+ *      atTheBeginning={false}
+ *      atTheEnd={false}
+ * />
  */
 function PaginationControls(props) {
     const activeButtonStyles = `py-2 px-3 rounded bg-purple-700 text-white text-xs`

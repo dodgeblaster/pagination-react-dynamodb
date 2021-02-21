@@ -10,7 +10,6 @@ import { useState, useEffect } from 'react'
  * @property {number} pageNumber - current page number
  * @property {boolean} isBeginning - to help with presentation logic
  * @property {boolean} isEnd - to help with presentation logic
- *
  */
 
 /**
@@ -19,7 +18,6 @@ import { useState, useEffect } from 'react'
  * @property {boolean} loading - to show a loading screen
  * @property {string | boolean} error - will show error message or false if no error is thrown
  * @property {boolean} loaded - which communciates that we have successfuly fetched the data
- *
  */
 
 /**
@@ -27,7 +25,6 @@ import { useState, useEffect } from 'react'
  * @type {object}
  * @property {function} back - will reference the pageNumber state and cursors, and load data for previous page
  * @property {function} next - will reference the pageNumber state and cursors, and load data for next page
- *
  */
 
 /**
@@ -36,14 +33,12 @@ import { useState, useEffect } from 'react'
  * @property {PaginationData} data
  * @property {NetworkState} network
  * @property {PaginationActions} actions
- *
  */
 
 /**
- * Use Pagination
+ * @name usePagination
  * @param {function} apiCall
  * @returns {HookResponse}
- *
  */
 const usePagination = (apiCall) => {
     const [loading, updateLoading] = useState(true)
@@ -56,7 +51,6 @@ const usePagination = (apiCall) => {
 
     /**
      * Make initial api call
-     *
      */
     useEffect(() => {
         apiCall(null)
@@ -76,12 +70,11 @@ const usePagination = (apiCall) => {
     }, [apiCall])
 
     /**
-     * Get List
      * This function either be called to go to the next page, or go back a page
+     * @name getList
      * @param {string} cursor
      * @param {number} page
-     * @returns {void} void
-     *
+     * @returns {void}
      */
     const getList = async (cursor, page) => {
         updateLoading(true)
@@ -105,7 +98,6 @@ const usePagination = (apiCall) => {
     }
 
     /**
-     * Next Page
      * This function will first check if we have a next cursor to use.
      * If we dont, then we cant make a call, so we return silently. This
      * covers the scenario where we are at the end of our list.
@@ -115,8 +107,8 @@ const usePagination = (apiCall) => {
      *
      * Otherwise, make an api call.
      *
-     * @returns {void} void
-     *
+     * @name nextPage
+     * @returns {void}
      */
     const nextPage = async () => {
         if (!cache[pageNumber].next) {
@@ -134,7 +126,6 @@ const usePagination = (apiCall) => {
     }
 
     /**
-     * Prev Page
      * This function will first check if we are on page 1. If so,
      * return silently, because we are at the beginning of the list.
      *
@@ -143,8 +134,8 @@ const usePagination = (apiCall) => {
      *
      * Otherwise, make an api call.
      *
-     * @returns {void} void
-     *
+     * @name prevPage
+     * @returns {void}
      */
     const prevPage = async () => {
         if (pageNumber === 1) {
@@ -161,28 +152,22 @@ const usePagination = (apiCall) => {
         await getList(cache[pageNumber], prevIndex)
     }
 
-    const data = {
-        list,
-        pageNumber: pageNumber,
-        isBeginning: pageNumber === 1,
-        isEnd: cache[pageNumber] && !cache[pageNumber].next
-    }
-
-    const network = {
-        loading,
-        error: errorMessage,
-        loaded
-    }
-
-    const actions = {
-        back: prevPage,
-        next: nextPage
-    }
-
     return {
-        network,
-        data,
-        actions
+        network: {
+            loading,
+            error: errorMessage,
+            loaded
+        },
+        data: {
+            list,
+            pageNumber: pageNumber,
+            isBeginning: pageNumber === 1,
+            isEnd: cache[pageNumber] && !cache[pageNumber].next
+        },
+        actions: {
+            back: prevPage,
+            next: nextPage
+        }
     }
 }
 

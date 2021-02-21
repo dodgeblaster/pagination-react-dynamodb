@@ -3,6 +3,19 @@ import PropTypes from 'prop-types'
 import Note from './components/Note'
 import PaginationControls from './components/PaginationControls'
 
+/**
+ * @name Pagination
+ * @component
+ * @example
+ * <Pagination
+ *      list={listOfData}
+ *      isBeginning={false}
+ *      isEnd={false}
+ *      pageNumber={1}
+ *      next={nextFunction}
+ *      back={backFunction}
+ *  />
+ */
 function Pagination(props) {
     let empty = props.list.length > 4 ? 0 : 4 - props.list.length
 

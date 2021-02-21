@@ -14,7 +14,6 @@ test('pagination hook can fetch data, cache data, show begingging and last pages
      * Setting up the fetcher to return three different
      * sets of data, because the apiCall will be executed
      * 3 times in our testing scenario
-     *
      */
     const fetcher = jest
         .fn()
@@ -63,7 +62,6 @@ test('pagination hook can fetch data, cache data, show begingging and last pages
 
     /**
      * Test Scenario
-     *
      */
     render(<Component fetcher={fetcher} />)
 
