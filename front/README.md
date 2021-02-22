@@ -21,16 +21,12 @@ Example project stucture:
 /pages
     /Notes
         /components
-            /_stories
-                ComponentA.stories.js
-                ComponentB.stories.js
             ComponentA.js
-            ComponentB.js
+            ComponentA.stories.js
         /hooks
-            /_tests
-                TestComponent.js
-                hookA.test.js
             hookA.js
+            hookA.test.js
+            hookA.example.js
         Container.js
         PresentationLoading.js
         PresentationError.js
