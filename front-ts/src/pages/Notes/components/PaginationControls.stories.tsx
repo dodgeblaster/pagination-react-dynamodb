@@ -5,11 +5,14 @@ export default {
     component: PaginationControls
 }
 
+const backFn = async () => console.log('BACK')
+const nextFn = async () => console.log('NEXT')
+
 export const Normal = () => (
     <PaginationControls
         pageNumber={12}
-        back={() => console.log('BACK')}
-        next={() => console.log('NEXT')}
+        back={backFn}
+        next={nextFn}
         atTheBeginning={false}
         atTheEnd={false}
     />
@@ -18,8 +21,8 @@ export const Normal = () => (
 export const AtTheBeginning = () => (
     <PaginationControls
         pageNumber={12}
-        back={() => console.log('BACK')}
-        next={() => console.log('NEXT')}
+        back={backFn}
+        next={nextFn}
         atTheBeginning={true}
         atTheEnd={false}
     />
@@ -28,8 +31,8 @@ export const AtTheBeginning = () => (
 export const AtTheEnd = () => (
     <PaginationControls
         pageNumber={12}
-        back={() => console.log('BACK')}
-        next={() => console.log('NEXT')}
+        back={backFn}
+        next={nextFn}
         atTheBeginning={false}
         atTheEnd={true}
     />

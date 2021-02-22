@@ -10,7 +10,7 @@ import usePagination from './usePagination'
 /**
  * Test Component to mount the usePagination hook into
  */
-function Component(props) {
+function Component(props: any) {
     const { network, data, actions } = usePagination(props.fetcher)
 
     if (network.error) {
@@ -38,7 +38,7 @@ function Component(props) {
     )
 }
 
-const makePromise = (response) => new Promise((res) => res(response))
+const makePromise = (response: any) => new Promise((res) => res(response))
 
 test('pagination hook can fetch data, cache data, show begingging and last pages', async () => {
     /**

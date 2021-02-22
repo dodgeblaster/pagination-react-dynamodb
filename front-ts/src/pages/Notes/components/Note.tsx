@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 const Icon = () => (
     <svg
@@ -19,13 +18,12 @@ const Icon = () => (
     </svg>
 )
 
-/**
- * @name Pagination/Component/Note
- * @component
- * @example
- * <Note title="Example Note 1" />
- */
-function Note(props) {
+type NoteProps = {
+    title?: string
+    loading?: boolean
+}
+
+function Note(props: NoteProps) {
     if (props.loading) {
         return (
             <div className="flex items-center px-3 h-14">
@@ -45,11 +43,6 @@ function Note(props) {
             <p className="ml-auto text-gray-300 text-xs">Added on Jan 30th</p>
         </div>
     )
-}
-
-Note.propTypes = {
-    loading: PropTypes.bool,
-    title: PropTypes.string
 }
 
 export default Note

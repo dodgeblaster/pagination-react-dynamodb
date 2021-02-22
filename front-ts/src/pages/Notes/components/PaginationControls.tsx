@@ -1,19 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-/**
- * @name Pagination/Component/Controls
- * @component
- * @example
- * <PaginationControls
- *      pageNumber={12}
- *      back={() => console.log('BACK')}
- *      next={() => console.log('NEXT')}
- *      atTheBeginning={false}
- *      atTheEnd={false}
- * />
- */
-function PaginationControls(props) {
+type PaginationControlsProps = {
+    pageNumber: number
+    atTheBeginning?: boolean
+    atTheEnd?: boolean
+    back?: () => Promise<void>
+    next?: () => Promise<void>
+}
+
+function PaginationControls(props: PaginationControlsProps) {
     const activeButtonStyles = `py-2 px-3 rounded bg-purple-700 text-white text-xs`
     const disabledButtonStyles = `py-2 px-3 rounded bg-purple-200 text-white text-xs cursor-not-allowed`
 
@@ -46,14 +41,6 @@ function PaginationControls(props) {
             </button>
         </div>
     )
-}
-
-PaginationControls.propTypes = {
-    atTheBeginning: PropTypes.bool,
-    atTheEnd: PropTypes.bool,
-    pageNumber: PropTypes.number,
-    back: PropTypes.func,
-    next: PropTypes.func
 }
 
 export default PaginationControls

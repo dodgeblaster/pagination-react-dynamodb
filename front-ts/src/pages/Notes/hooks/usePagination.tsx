@@ -1,59 +1,42 @@
 import { useState, useEffect } from 'react'
+import { Note } from '../types'
+
+type HookResponse = {
+    data: {
+        list: Note[]
+        pageNumber: number
+        isBeginning: boolean
+        isEnd: boolean
+    }
+    network: {
+        loading: boolean
+        error: string | boolean
+        loaded: boolean
+    }
+    actions: {
+        back: () => Promise<void>
+        next: () => Promise<void>
+    }
+}
+
+type ApiResponse = {
+    items: Note[]
+    next: string
+}
+
+type Fetcher = (cursor: string | null) => Promise<ApiResponse>
+
 /**
- * @module
- * @name hook/usePagination
- * @description This module is takes a fetcher function and returns data, network, and actions
+ * This module is takes a fetcher function and returns data, network, and actions
  * to facilitate the pagination workflow.
- *
- * @example
- * const notesFetcher = (cursor) => fetch(`https://myNotesUrl.com?cursor=${cursor}`)
- * const { network, data, actions } = usePagination(notesFetcher)
  */
-
-/**
- * @typedef PaginationData
- * @type {object}
- * @property {object[]} list - list of items
- * @property {number} pageNumber - current page number
- * @property {boolean} isBeginning - to help with presentation logic
- * @property {boolean} isEnd - to help with presentation logic
- */
-
-/**
- * @typedef NetworkState
- * @type {obje2ct}
- * @property {boolean} loading - to show a loading screen
- * @property {string | boolean} error - will show error message or false if no error is thrown
- * @property {boolean} loaded - which communciates that we have successfuly fetched the data
- */
-
-/**
- * @typedef PaginationActions
- * @type {object}
- * @property {function} back - will reference the pageNumber state and cursors, and load data for previous page
- * @property {function} next - will reference the pageNumber state and cursors, and load data for next page
- */
-
-/**
- * @typedef HookResponse
- * @type {object}
- * @property {PaginationData} data
- * @property {NetworkState} network
- * @property {PaginationActions} actions
- */
-
-/**
- * @name usePagination
- * @param {function} apiCall
- * @returns {HookResponse}
- */
-const usePagination = (apiCall) => {
-    const [loading, updateLoading] = useState(true)
-    const [loaded, updateLoaded] = useState(false)
-    const [errorMessage, updateErrorMessage] = useState(false)
-    const [list, updateList] = useState([])
-    const [next, updateNext] = useState(null)
-    const [cache, updateCache] = useState({})
+const usePagination = (apiCall: Fetcher): HookResponse => {
+    const [loading, updateLoading] = useState<boolean>(true)
+    const [loaded, updateLoaded] = useState<boolean>(false)
+    const [errorMessage, updateErrorMessage] = useState<string | false>(false)
+    const [list, updateList] = useState<Array<Note>>([])
+    const [next, updateNext] = useState<string | null>(null)
+    const [cache, updateCache] = useState<Record<number, ApiResponse>>({})
     const [pageNumber, updatePageNumber] = useState(1)
 
     /**
@@ -61,7 +44,7 @@ const usePagination = (apiCall) => {
      */
     useEffect(() => {
         apiCall(null)
-            .then((data) => {
+            .then((data: ApiResponse) => {
                 updateLoading(false)
                 updateLoaded(true)
                 updateList(data.items)
@@ -84,12 +67,11 @@ const usePagination = (apiCall) => {
      * - update the next cursor
      * - update cache
      * - update current page number
-     * @name getDataWithFetcher
-     * @param {string} cursor
-     * @param {number} page
-     * @returns {void}
      */
-    const getDataWithFetcher = async (cursor, page) => {
+    const getDataWithFetcher = async (
+        cursor: string | null,
+        page: number
+    ): Promise<void> => {
         updateLoading(true)
         try {
             const data = await apiCall(cursor)
@@ -120,11 +102,8 @@ const usePagination = (apiCall) => {
      * the results in our cache, if so, then return those results
      *
      * Otherwise, make an api call.
-     *
-     * @name nextPage
-     * @returns {void}
      */
-    const nextPage = async () => {
+    const nextPage = async (): Promise<void> => {
         if (!cache[pageNumber].next) {
             return
         }
@@ -148,11 +127,8 @@ const usePagination = (apiCall) => {
      * the results in our cache, if so, then return those results
      *
      * Otherwise, make an api call.
-     *
-     * @name prevPage
-     * @returns {void}
      */
-    const prevPage = async () => {
+    const prevPage = async (): Promise<void> => {
         if (pageNumber === 1) {
             return
         }
@@ -164,7 +140,7 @@ const usePagination = (apiCall) => {
             return
         }
 
-        await getDataWithFetcher(cache[pageNumber], prevIndex)
+        await getDataWithFetcher(cache[pageNumber].next, prevIndex)
     }
 
     return {

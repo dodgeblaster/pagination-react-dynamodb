@@ -1,4 +1,4 @@
-import usePagination from '../usePagination'
+import usePagination from './usePagination'
 
 function Component(props) {
     const { network, data, actions } = usePagination(props.fetcher)

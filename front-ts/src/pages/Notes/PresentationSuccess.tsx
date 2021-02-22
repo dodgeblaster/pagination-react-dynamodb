@@ -1,12 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import Note from './components/Note'
+import NoteComponent from './components/Note'
 import PaginationControls from './components/PaginationControls'
+import { Note } from './types'
+
+type PaginationProps = {
+    pageNumber: number
+    list: Note[]
+    isBeginning: boolean
+    isEnd: boolean
+    next: () => Promise<void>
+    back: () => Promise<void>
+}
 
 /**
- * @name Pagination/PresentationSuccess
- * @component
- * @example
  * <Pagination
  *      list={listOfData}
  *      isBeginning={false}
@@ -16,7 +22,7 @@ import PaginationControls from './components/PaginationControls'
  *      back={backFunction}
  *  />
  */
-function Pagination(props) {
+function Pagination(props: PaginationProps) {
     let empty = props.list.length > 4 ? 0 : 4 - props.list.length
 
     return (
@@ -27,10 +33,10 @@ function Pagination(props) {
             <div className=" w-96 bg-white shadow-md rounded">
                 <div className="divide-y divide-gray-100">
                     {props.list.map((x) => (
-                        <Note key={x.sk} title={x.title} />
+                        <NoteComponent key={x.sk} title={x.title} />
                     ))}
                     {Array.from({ length: empty }).map((x, i) => (
-                        <Note key={'blank-' + i} title={''} />
+                        <NoteComponent key={'blank-' + i} title={''} />
                     ))}
                 </div>
             </div>
@@ -43,16 +49,6 @@ function Pagination(props) {
             />
         </div>
     )
-}
-
-Pagination.propTypes = {
-    list: PropTypes.array,
-    paginationState: PropTypes.number.isRequired,
-    isBeginning: PropTypes.bool,
-    isEnd: PropTypes.bool,
-    pageNumber: PropTypes.number,
-    back: PropTypes.func.isRequired,
-    next: PropTypes.func.isRequired
 }
 
 export default Pagination

@@ -4,17 +4,7 @@ import PresentationError from './PresentationError'
 import PresentationLoading from './PresentationLoading'
 import PresentationSuccess from './PresentationSuccess'
 
-type NotesResponse = {
-    items: object[]
-    next: string
-}
-
-/**
- * @name NotesFetcher
- * @param {string} cursor - if not provided, will default to null
- * @returns {Promise<NotesResponse>}
- */
-const notesFetcher = async (cursor?: string): Promise<NotesResponse> => {
+const notesFetcher = async (cursor: string | null) => {
     const url: string = process.env.REACT_APP_URL || ''
     const x = await fetch(url, {
         method: 'POST',
@@ -27,12 +17,6 @@ const notesFetcher = async (cursor?: string): Promise<NotesResponse> => {
     return data
 }
 
-/**
- * @name Pagination/Container
- * @component
- * @example
- * <PaginationContainer/>
- */
 function PaginationContainer() {
     const { network, data, actions } = usePagination(notesFetcher)
 

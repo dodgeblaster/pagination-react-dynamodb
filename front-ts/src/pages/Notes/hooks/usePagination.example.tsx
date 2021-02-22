@@ -1,6 +1,6 @@
-import usePagination from '../usePagination'
+import usePagination from './usePagination'
 
-function Component(props) {
+function Component(props: any) {
     const { network, data, actions } = usePagination(props.fetcher)
 
     if (network.error) {
@@ -15,7 +15,7 @@ function Component(props) {
         <div>
             <p>Successfully Loaded</p>
             <div>
-                {data.list.map((x, i) => (
+                {data.list.map((x: any, i: number) => (
                     <p key={i}>{x.title}</p>
                 ))}
             </div>
