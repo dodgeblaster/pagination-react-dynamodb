@@ -1,0 +1,54 @@
+service: pagination-deno-back-2
+
+frameworkVersion: '2'
+
+provider:
+    name: aws
+    runtime: provided.al2
+    environment:
+        TABLE: ${self:service}-${opt:stage, self:provider.stage}
+        HANDLER_EXT: ts
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - dynamodb:Query
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+          Resource: !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${self:service}-${opt:stage, self:provider.stage}'
+
+package:
+    exclude:
+        - .deno_dir/gen/file
+        - node_modules
+        - package-lock.json
+
+functions:
+    hello:
+        handler: src/mod.handler
+        layers:
+            - 'arn:aws:lambda:us-east-1:251256923172:layer:deno:1'
+        events:
+            - http:
+                  path: getnotes
+                  cors: true
+                  method: post
+
+resources:
+    Resources:
+        productsTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:service}-${opt:stage, self:provider.stage}
+                AttributeDefinitions:
+                    - AttributeName: pk
+                      AttributeType: S
+                    - AttributeName: sk
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: pk
+                      KeyType: HASH
+                    - AttributeName: sk
+                      KeyType: RANGE
+                BillingMode: PAY_PER_REQUEST

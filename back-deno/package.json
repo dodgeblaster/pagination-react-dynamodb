@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "deploy": "DENO_DIR=.deno_dir deno cache src/mod.ts && cp -R .deno_dir/gen/file/$PWD/ .deno_dir/LAMBDA_TASK_ROOT && sls deploy"
+    }
+}

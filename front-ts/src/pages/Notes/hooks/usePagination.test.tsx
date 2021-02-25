@@ -11,7 +11,7 @@ import usePagination from './usePagination'
  * Test Component to mount the usePagination hook into
  */
 function Component(props: any) {
-    const { network, data, actions } = usePagination(props.fetcher)
+    const { network, data, actions } = usePagination({ fetcher: props.fetcher })
 
     if (network.error) {
         return <p>{network.error}</p>

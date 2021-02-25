@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
  * @name hook/usePagination
  * @description This module is takes a fetcher function and returns data, network, and actions
  * to facilitate the pagination workflow.
- *
  * @example
  * const notesFetcher = (cursor) => fetch(`https://myNotesUrl.com?cursor=${cursor}`)
  * const { network, data, actions } = usePagination(notesFetcher)
@@ -21,7 +20,7 @@ import { useState, useEffect } from 'react'
 
 /**
  * @typedef NetworkState
- * @type {obje2ct}
+ * @type {object}
  * @property {boolean} loading - to show a loading screen
  * @property {string | boolean} error - will show error message or false if no error is thrown
  * @property {boolean} loaded - which communciates that we have successfuly fetched the data
@@ -43,18 +42,33 @@ import { useState, useEffect } from 'react'
  */
 
 /**
+ * @typedef InternalState
+ * @type {object}
+ * @property {boolean} loading
+ * @property {boolean} loaded
+ * @property {string | false} errorMessage
+ * @property {Note[]} list
+ * @property {string | null} next
+ * @property {Record<number, {items: Note[], next: string}>} cache
+ * @property {number} pageNumber
+ */
+const initialState = {
+    loading: true,
+    loaded: false,
+    errorMessage: false,
+    list: [],
+    next: null,
+    cache: {},
+    pageNumber: 1
+}
+
+/**
  * @name usePagination
  * @param {function} apiCall
  * @returns {HookResponse}
  */
 const usePagination = (apiCall) => {
-    const [loading, updateLoading] = useState(true)
-    const [loaded, updateLoaded] = useState(false)
-    const [errorMessage, updateErrorMessage] = useState(false)
-    const [list, updateList] = useState([])
-    const [next, updateNext] = useState(null)
-    const [cache, updateCache] = useState({})
-    const [pageNumber, updatePageNumber] = useState(1)
+    const [state, updateState] = useState(initialState)
 
     /**
      * Make initial api call
@@ -62,18 +76,28 @@ const usePagination = (apiCall) => {
     useEffect(() => {
         apiCall(null)
             .then((data) => {
-                updateLoading(false)
-                updateLoaded(true)
-                updateList(data.items)
-                updateNext(data.next)
-                updateCache({
-                    1: {
-                        next: data.next,
-                        items: data.items
+                updateState({
+                    ...initialState,
+                    loading: false,
+                    loaded: true,
+                    list: data.items,
+                    errorMessage: false,
+                    next: data.next,
+                    pageNumber: 1,
+                    cache: {
+                        1: {
+                            next: data.next,
+                            items: data.items
+                        }
                     }
                 })
             })
-            .catch((e) => updateErrorMessage(e.message))
+            .catch((e) => {
+                updateState({
+                    ...initialState,
+                    errorMessage: e.message
+                })
+            })
     }, [apiCall])
 
     /**
@@ -90,23 +114,32 @@ const usePagination = (apiCall) => {
      * @returns {void}
      */
     const getDataWithFetcher = async (cursor, page) => {
-        updateLoading(true)
+        updateState({
+            ...state,
+            loading: true
+        })
         try {
             const data = await apiCall(cursor)
-            updateLoaded(true)
-            updateLoading(false)
-            updateList(data.items)
-            updateNext(data.next)
-            updateCache({
-                ...cache,
-                [page]: {
-                    next: data.next,
-                    items: data.items
-                }
+            updateState({
+                ...state,
+                loading: false,
+                loaded: true,
+                list: data.items,
+                next: data.next,
+                cache: {
+                    ...state.cache,
+                    [page]: {
+                        next: data.next,
+                        items: data.items
+                    }
+                },
+                pageNumber: page
             })
-            updatePageNumber(page)
         } catch (e) {
-            updateErrorMessage(e.message)
+            updateState({
+                ...state,
+                errorMessage: e.message
+            })
         }
     }
 
@@ -125,18 +158,21 @@ const usePagination = (apiCall) => {
      * @returns {void}
      */
     const nextPage = async () => {
-        if (!cache[pageNumber].next) {
+        if (!state.cache[state.pageNumber].next) {
             return
         }
 
-        const nextIndex = pageNumber + 1
-        if (cache[nextIndex]) {
-            updateList(cache[nextIndex].items)
-            updatePageNumber(nextIndex)
+        const nextIndex = state.pageNumber + 1
+        if (state.cache[nextIndex]) {
+            updateState({
+                ...state,
+                list: state.cache[nextIndex].items,
+                pageNumber: nextIndex
+            })
             return
         }
 
-        getDataWithFetcher(next, nextIndex)
+        getDataWithFetcher(state.next, nextIndex)
     }
 
     /**
@@ -153,31 +189,37 @@ const usePagination = (apiCall) => {
      * @returns {void}
      */
     const prevPage = async () => {
-        if (pageNumber === 1) {
+        if (state.pageNumber === 1) {
             return
         }
 
-        const prevIndex = pageNumber - 1
-        if (cache[prevIndex]) {
-            updateList(cache[prevIndex].items)
-            updatePageNumber(prevIndex)
+        const prevIndex = state.pageNumber - 1
+        if (state.cache[prevIndex]) {
+            updateState({
+                ...state,
+                list: state.cache[prevIndex].items,
+                pageNumber: prevIndex
+            })
+
             return
         }
 
-        await getDataWithFetcher(cache[pageNumber], prevIndex)
+        await getDataWithFetcher(state.cache[state.pageNumber].next, prevIndex)
     }
 
     return {
         network: {
-            loading,
-            error: errorMessage,
-            loaded
+            loading: state.loading,
+            error: state.errorMessage,
+            loaded: state.loaded
         },
         data: {
-            list,
-            pageNumber: pageNumber,
-            isBeginning: pageNumber === 1,
-            isEnd: cache[pageNumber] && !cache[pageNumber].next
+            list: state.list,
+            pageNumber: state.pageNumber,
+            isBeginning: state.pageNumber === 1,
+            isEnd:
+                state.cache[state.pageNumber] &&
+                !state.cache[state.pageNumber].next
         },
         actions: {
             back: prevPage,

@@ -4,6 +4,13 @@ import PresentationError from './PresentationError'
 import PresentationLoading from './PresentationLoading'
 import PresentationSuccess from './PresentationSuccess'
 
+/**
+ * Note Fetcher is the function that will be used by the the
+ * usePagination hook
+ *
+ * @param cursor String that represents the starting place for
+ * db query
+ */
 const notesFetcher = async (cursor: string | null) => {
     const url: string = process.env.REACT_APP_URL || ''
     const x = await fetch(url, {
@@ -18,8 +25,7 @@ const notesFetcher = async (cursor: string | null) => {
 }
 
 function PaginationContainer() {
-    const { network, data, actions } = usePagination(notesFetcher)
-
+    const { network, data, actions } = usePagination({ fetcher: notesFetcher })
     if (network.error) {
         return (
             <PresentationError pageNumber={data.pageNumber}>
@@ -44,4 +50,8 @@ function PaginationContainer() {
     )
 }
 
+/**
+ * My Note for Docs
+ *
+ */
 export default PaginationContainer
