@@ -1,5 +1,5 @@
 describe('Pagination', () => {
-    it('Does not do much!', () => {
+    it('works!', () => {
         cy.visit('/')
 
         /**

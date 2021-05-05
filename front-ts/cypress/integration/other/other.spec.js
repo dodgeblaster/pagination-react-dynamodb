@@ -1,5 +1,5 @@
-describe('Pagination', () => {
-    it('Does not do much!', () => {
+describe('Other Pagination', () => {
+    it('works!', () => {
         cy.visit('/')
 
         /**
