@@ -24,7 +24,11 @@
         "storybook": "start-storybook -p 6006 -s public",
         "build-storybook": "build-storybook -s public",
         "test-unit": "react-scripts test",
-        "docs": "typedoc"
+        "docs": "typedoc",
+        "cypress:open": "./node_modules/.bin/cypress open",
+        "cypress:run": "npm start & wait-on http://localhost:8080 & ./node_modules/.bin/cypress run",
+        "ci:build": "react-scripts build",
+        "ci:test": "REACT_APP_URL=https://2zfzqmfeik.execute-api.us-east-1.amazonaws.com/dev/getnotes REACT_APP_ANALYTICS_ENDPOINT=https://3pgdt7kq0d.execute-api.us-east-1.amazonaws.com/dev/analytics npm start & wait-on http://localhost:8080 & ./node_modules/.bin/cypress run"
     },
     "eslintConfig": {
         "extends": [
@@ -51,6 +55,8 @@
         "@storybook/node-logger": "^6.1.18",
         "@storybook/preset-create-react-app": "^3.1.6",
         "@storybook/react": "^6.1.18",
-        "typedoc": "^0.20.28"
+        "cypress": "^7.2.0",
+        "typedoc": "^0.20.28",
+        "wait-on": "^5.3.0"
     }
 }

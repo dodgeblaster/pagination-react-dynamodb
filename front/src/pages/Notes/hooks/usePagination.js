@@ -111,7 +111,7 @@ const usePagination = (apiCall) => {
      * @name getDataWithFetcher
      * @param {string} cursor
      * @param {number} page
-     * @returns {void}
+     * @returns {Promise<void>}
      */
     const getDataWithFetcher = async (cursor, page) => {
         updateState({

@@ -1,0 +1,42 @@
+version: 0.2
+
+batch:
+    fast-fail: false
+    build-matrix:
+        static:
+            ignore-failure: false
+            env:
+                type: LINUX_CONTAINER
+                privileged-mode: true
+                compute-type: BUILD_GENERAL1_MEDIUM
+        dynamic:
+            env:
+                compute-type:
+                    - BUILD_GENERAL1_MEDIUM
+                image:
+                    - public.ecr.aws/cypress-io/cypress/browsers:node14.15.0-chrome86-ff82
+                # variables:
+                #     CY_GROUP_SPEC:
+                #         - 'UI - Chrome|chrome|cypress/integration/ui/*'
+                #         - 'UI - Chrome|chrome|cypress/integration/other/*'
+                #     WORKERS:
+                #         - 1
+                #         - 2
+
+phases:
+    install:
+        commands:
+            # - echo $CODEBUILD_INITIATOR
+            # - echo $CY_GROUP_SPEC
+            # - CY_GROUP=$(echo $CY_GROUP_SPEC | cut -d'|' -f1)
+            # - CY_BROWSER=$(echo $CY_GROUP_SPEC | cut -d'|' -f2)
+            # - echo $CY_GROUP
+            # - echo $CY_BROWSER
+            - npm install
+    pre_build:
+        commands:
+            - npm ci:build
+    build:
+        commands:
+            - npm start & npx wait-on http://localhost:3000
+            - ./node_modules/.bin/cypress run
