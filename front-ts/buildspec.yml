@@ -35,8 +35,8 @@ phases:
             - cd front-ts && npm install
     pre_build:
         commands:
-            - cd front-ts && npm run ci:build
+            - npm run ci:build
     build:
         commands:
-            - cd front-ts && npm start & npx wait-on http://localhost:3000
-            - cd front-ts && ./node_modules/.bin/cypress run
+            - npm start & npx wait-on http://localhost:3000
+            - ./node_modules/.bin/cypress run
