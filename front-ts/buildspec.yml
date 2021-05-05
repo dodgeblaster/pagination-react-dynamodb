@@ -32,7 +32,7 @@ phases:
             # - CY_BROWSER=$(echo $CY_GROUP_SPEC | cut -d'|' -f2)
             # - echo $CY_GROUP
             # - echo $CY_BROWSER
-            - npm install
+            - cd front-ts && npm install
     pre_build:
         commands:
             - cd front-ts && npm run ci:build
