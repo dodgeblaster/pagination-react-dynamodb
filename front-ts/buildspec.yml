@@ -39,4 +39,4 @@ phases:
     build:
         commands:
             - npm start & npx wait-on http://localhost:3000
-            - ./node_modules/.bin/cypress run
+            - ./node_modules/.bin/cypress run --parallel
