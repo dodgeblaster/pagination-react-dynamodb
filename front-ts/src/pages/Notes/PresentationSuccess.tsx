@@ -13,16 +13,6 @@ type PaginationProps = {
     back: () => Promise<void>
 }
 
-/**
- * <Pagination
- *      list={listOfData}
- *      isBeginning={false}
- *      isEnd={false}
- *      pageNumber={1}
- *      next={nextFunction}
- *      back={backFunction}
- *  />
- */
 function Pagination(props: PaginationProps) {
     let empty = props.list.length > 4 ? 0 : 4 - props.list.length
 

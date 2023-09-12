@@ -41,11 +41,6 @@ const greenTeamNotes = async (cursor = null) => {
     }
 }
 
-/**
- * @name main
- * @param {ApiGatewayEvent} event
- * @returns {ApiGatewayResponse<NotesResponse>} - ApiGatewayResponse<> is made up. Not sure how to represent this yet
- */
 module.exports.main = async (event) => {
     const data = JSON.parse(event.body)
     const result = await greenTeamNotes(data.cursor)

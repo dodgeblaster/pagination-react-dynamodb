@@ -3,9 +3,7 @@ import {
     APIGatewayProxyResult
 } from 'https://deno.land/x/lambda/mod.ts'
 import { createClient } from 'https://denopkg.com/chiefbiiko/dynamodb/mod.ts'
-//import { config } from 'https://deno.land/x/dotenv/mod.ts'
 
-//const { TABLE } = config({ safe: true })
 const dynamoDb = createClient()
 
 export interface Doc {
@@ -15,35 +13,27 @@ export interface Doc {
 type NotesResponse = {
     next: string
     items: any
-
-    // {
-    //     sk: string
-    //     title: string
-    // }[]
 }
 
 const greenTeamNotes = async (cursor: string): Promise<NotesResponse> => {
-    // console.log('CONFFF: ', TABLE)
-    const params: any = {
+    const params = {
         TableName: 'pagination-deno-back-2-dev',
         KeyConditionExpression: 'pk = :pk AND begins_with(sk, :sk)',
         ExpressionAttributeValues: {
             ':pk': 'greenTeam',
             ':sk': 'note'
         },
-        Limit: 4
+        Limit: 4,
+        ExclusiveStartKey: cursor
+            ? {
+                  pk: 'greenTeam',
+                  sk: cursor
+              }
+            : undefined
     }
-
-    // if (cursor) {
-    //     params.ExclusiveStartKey = {
-    //         pk: 'greenTeam',
-    //         sk: cursor
-    //     }
-    // }
 
     const x: Doc = await dynamoDb.query(params)
 
-    console.log('THE RESULT: ', x)
     return {
         items: x,
         next: x.LastEvaluatedKey ? x.LastEvaluatedKey.sk : false
